@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>給妳的專屬訊息</title>
+    <style>
+        /* 手機上看起來很舒服的深色終端機風格 */
+        body {
+            background-color: #282c34;
+            color: #abb2bf;
+            font-family: 'Courier New', Courier, monospace;
+            padding: 30px 20px;
+            margin: 0;
+            font-size: 16px;
+            line-height: 1.8;
+        }
+        /* 浪漫的顏色點綴 */
+        .pink { color: #e06c75; }
+        .green { color: #98c379; }
+        .blue { color: #61afef; }
+        .yellow { color: #e5c07b; }
+        
+        /* 游標閃爍特效 */
+        #cursor {
+            display: inline-block;
+            width: 10px;
+            height: 18px;
+            background-color: #abb2bf;
+            animation: blink 1s step-end infinite;
+            vertical-align: middle;
+        }
+        @keyframes blink { 
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="terminal"></div><span id="cursor"></span>
+
+    <script>
+        // ==========================================
+        // 設定區：目標日期與名字
+        // ==========================================
+        const TARGET_DATE = "08-18"; // 明天的日期
+        
+        const today = new Date();
+        const month = String(today.getMonth() + 1).padStart(2, '0');
+        const day = String(today.getDate()).padStart(2, '0');
+        const currentDate = `${month}-${day}`;
+
+        const terminal = document.getElementById('terminal');
+
+        // 【時間還沒到】她會看到的冷酷提示
+        const lockedText = `[系統提示] 偵測到訪客連線...
+[系統提示] 權限不足。
+
+<span class="pink">這份心意被設定了「時間鎖」。</span>
+只有在特定的日子裡，才能解開這段訊息。
+
+請在明天再來看看吧！`;
+
+        // 【時間到了】她會看到的直白浪漫告白
+        const unlockedText = `[系統提示] 日期吻合，時間鎖已解除。
+[系統提示] 正在載入專屬心意... <span class="green">100%</span>
+
+================================
+
+<span class="pink">if</span> ( 我遇見了妳 ) {
+    
+    我的世界 = <span class="green">"亮起來了"</span>;
+    煩惱 = <span class="yellow">0</span>;
+    快樂 = <span class="blue">無限大</span>;
+
+}
+
+<span class="pink">while</span> ( 每一天 ) {
+
+    <span class="blue">print</span>(<span class="green">"雖然人家是忙忙碌碌的小可愛，又少少出去玩"</span>);
+    <span class="blue">print</span>(<span class="green">"但跟豬豬淇的日子可快樂呢，"</span>);
+    <span class="blue">print</span>(<span class="green">"之後請多多指教喵。"</span>);
+
+}
+
+================================
+
+七夕情人節快樂！❤️`;
+
+        // 判斷要顯示哪一段文字
+        const textToType = (currentDate === TARGET_DATE) ? unlockedText : lockedText;
+        
+        const lines = textToType.split('\n');
+        let currentLine = 0;
+        
+        // 打字機特效
+        function typeLine() {
+            if (currentLine < lines.length) {
+                terminal.innerHTML += lines[currentLine] + '\n';
+                currentLine++;
+                // 稍微放慢速度，讓非工程師也能慢慢讀（每行 0.6 秒）
+                setTimeout(typeLine, 600);
+            }
+        }
+        
+        setTimeout(typeLine, 800);
+    </script>
+</body>
+</html>
